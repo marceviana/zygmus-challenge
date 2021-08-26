@@ -1,1 +1,1 @@
-# zygmus-test
+# zygmus-challenge
