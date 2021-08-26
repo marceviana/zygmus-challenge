@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from "prop-types";
-import { Alert } from '@material-ui/lab';
+import CloseIcon from '@material-ui/icons/Close';
+import SendIcon from '@material-ui/icons/SendRounded';
 
+import { Alert } from '@material-ui/lab';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
     CardHeader,
     CardContent,
@@ -13,11 +16,6 @@ import {
     DialogContent,
     TextField,  
 } from '@material-ui/core';
-
-import CloseIcon from '@material-ui/icons/Close';
-import SendIcon from '@material-ui/icons/SendRounded';
-
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const CustomTextField = withStyles({
     root: {
@@ -87,8 +85,12 @@ const PostComments = ({ post, comments, onAddComment, open, setOpen, ...props })
         </DialogTitle>
         <DialogContent ref={contentsRef} className={classes.dialogContent} dividers>
             { 
-                !!props.errorFetchingComments && <Alert severity="error">Ops, something went wrong — you may try reloading the page =)</Alert>
+                !!props.errorFetchingComments && 
+                <Alert severity="error">
+                    Ops, something went wrong — you may try reloading the page =)
+                </Alert>
             }
+            <div>
             {
                 comments.map((comment, k)=>{
                     return (
@@ -107,6 +109,7 @@ const PostComments = ({ post, comments, onAddComment, open, setOpen, ...props })
                     )
                 })
             }
+            </div>
             <CardContent className={classes.fieldWrapper}>
                 <Avatar className={`${classes.avatar} ${classes.userAvatar}`} />
                 <CustomTextField 
@@ -115,22 +118,36 @@ const PostComments = ({ post, comments, onAddComment, open, setOpen, ...props })
                     variant="filled" 
                     label="write a comment..." 
                     className={classes.textField}
-                    rows={commentContent.split('\n').length}
+                    rows={commentContent.split('\n').length} // add rows as user inserts new lines
                     value={commentContent}
                     onChange={e=>setCommentContent(e.target.value)}
+                    inputProps={{
+                        'aria-label': "write a comment"
+                    }}
                 />
-                <IconButton className={classes.sendButton} aria-label="post" onClick={e=>{
-                    !!commentContent && onAddComment({
-                        postId: post.id,
-                        name: "Marcelo Viana",
-                        email: "marceloviana00@gmail.com",
-                        body: commentContent
-                    })
-                    setCommentContent("");
-                    setTimeout(() => {
-                        if (contentsRef.current) contentsRef.current.scrollTop = contentsRef.current.scrollHeight + 100;
-                    }, 100 )
-                }}>
+                <IconButton 
+                    className={classes.sendButton} 
+                    aria-label="post your comment" 
+                    onClick={e=>{
+                        !!commentContent && onAddComment({
+                            postId: post.id,
+                            name: "Marcelo Viana",
+                            email: "marceloviana00@gmail.com",
+                            body: commentContent
+                        })
+                        setCommentContent("");
+                        
+                        setTimeout(() => {
+                            /* 
+                                Scroll down the comments' container for 
+                                the user to have visual feedback 
+                                on the comment recently added
+                            */
+                            if (contentsRef.current) 
+                                contentsRef.current.scrollTop = contentsRef.current.scrollHeight + 100;
+                        }, 100 )
+                    }}
+                >
                     <SendIcon />
                 </IconButton>
             </CardContent>

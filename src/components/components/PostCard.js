@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from "prop-types";
 import clsx from 'clsx';
+import PostComments from './PostComments';
+import FavoriteIcon from '@material-ui/icons/FavoriteBorderOutlined';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
 
+import { makeStyles } from '@material-ui/core/styles';
 import {
     Card,
     CardHeader,
@@ -11,12 +15,6 @@ import {
     IconButton,
     Typography,
 } from '@material-ui/core';
-
-import FavoriteIcon from '@material-ui/icons/FavoriteBorderOutlined';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
-
-import { makeStyles } from '@material-ui/core/styles';
-import PostComments from './PostComments';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,12 +54,14 @@ const PostCard = ({ post, ...props }) => {
                 subheader={<small>{dateStr.replace(dateStr.substr(-7,7),'')}</small>}
             />
             <CardContent>
-                <Typography variant="body2" align="left" color="textSecondary">{ post.body }</Typography>
+                <Typography variant="body2" align="left" color="textSecondary">
+                    { post.body }
+                </Typography>
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton 
                     onClick={handleFavoriteClick}
-                    aria-label="add to favorites"
+                    aria-label={favorite ? "remove from favorites" : "add to favorites"}
                 >
                     <FavoriteIcon color={favorite ? "error" : "inherit"} />
                 </IconButton>
@@ -71,7 +71,7 @@ const PostCard = ({ post, ...props }) => {
                     })}
                     onClick={e=>setOpen(true)}
                     aria-expanded={open}
-                    aria-label="show more"
+                    aria-label="view comments"
                 >
                     <ChatBubbleIcon />
                 </IconButton>
@@ -82,7 +82,9 @@ const PostCard = ({ post, ...props }) => {
 }
 
 PostCard.propTypes = {
-    post: PropTypes.object.isRequired
+    post: PropTypes.object.isRequired,
+    comments: PropTypes.array.isRequired,
+    onAddComment: PropTypes.func.isRequired,
 }
 
 export default PostCard

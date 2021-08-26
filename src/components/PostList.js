@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
-import { makeStyles, Card, CardHeader, CardContent, CardActions } from '@material-ui/core';
-import { Alert, Skeleton } from '@material-ui/lab';
+import PropTypes from "prop-types";
+import { Alert } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/core';
 import PostCard from './components/PostCard'
+import Placeholder from './components/Placeholder';
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -22,29 +24,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const SkeletonPlaceholder = ({ count, classes }) => {
-    const CardPlaceholder = () => <Card className={classes.card}>
-        <CardHeader
-            avatar={<Skeleton variant="circle" width={40} height={40} />}
-            title={<Skeleton variant="text" />}
-            subheader={<Skeleton variant="text" />}
-        />
-        <CardContent>
-            <Skeleton variant="text" />
-            <Skeleton variant="text" />
-        </CardContent>
-        <CardActions className={classes.actions}>
-            <Skeleton variant="rect" width={25} height={20} />
-            <Skeleton variant="rect" width={25} height={20} />
-        </CardActions>
-    </Card>
-    return <div className={classes.list}>
-        <CardPlaceholder />
-        <CardPlaceholder />
-        <CardPlaceholder />
-    </div>
-}
-
 const PostList = ({ getPosts, getComments, addComment, cleanPosts, posts, comments, ...props }) => {
 
     useEffect(() => {
@@ -63,6 +42,9 @@ const PostList = ({ getPosts, getComments, addComment, cleanPosts, posts, commen
         return comments.filter(c=>c.postId===postId)
     }
 
+    /* 
+        @handleScroll implements infinite scroll on posts list
+    */
     const handleScroll = () => {
         if (window.innerHeight + 
             Math.max(window.pageYOffset,document.documentElement.scrollTop,document.body.scrollTop) 
@@ -80,18 +62,42 @@ const PostList = ({ getPosts, getComments, addComment, cleanPosts, posts, commen
 
     return <>
         { 
-            !!props.errorFetchingPosts && <Alert severity="error">Ops, something went wrong — you may try reloading the page =)</Alert>
+            !!props.errorFetchingPosts && 
+            <Alert severity="error">
+                Ops, something went wrong — you may try reloading the page =)
+            </Alert>
         }
         <div className={`post-list ${classes.list}`}>
             {posts.map((post,k)=>
                 k < numberPosts ? 
-                <PostCard onAddComment={addComment} comments={filterComments(post.id)} post={post} key={k} /> : 
+                <PostCard 
+                    onAddComment={addComment} 
+                    comments={filterComments(post.id)} 
+                    post={post} 
+                    key={k} /> 
+                : 
                 null
             )}
         </div>
-        { !!props.fetchingPosts && <SkeletonPlaceholder classes={classes} count={6} /> }
+        { 
+            !!props.fetchingPosts && 
+            <Placeholder count={3} classes={classes} /> 
+        }
     </>
 
+}
+
+PostList.propTypes = {
+    posts: PropTypes.array.isRequired,
+    fetchingPosts: PropTypes.bool.isRequired,
+    errorFetchingPosts: PropTypes.bool.isRequired,
+    comments: PropTypes.array.isRequired,
+    fetchingComments: PropTypes.bool.isRequired,
+    errorFetchingComments: PropTypes.bool.isRequired,
+    addComment: PropTypes.func.isRequired,
+    getComments: PropTypes.func.isRequired,
+    getPosts: PropTypes.func.isRequired,
+    cleanPosts: PropTypes.func.isRequired,
 }
 
 export default PostList
