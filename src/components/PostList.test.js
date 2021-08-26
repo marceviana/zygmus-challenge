@@ -81,7 +81,8 @@ test('Error on fetching posts', async () => {
     
     render(<PostList {...props} errorFetchingPosts={true} />);
 
-    const errorAlert = screen.getByText('Ops, something went wrong — you may try reloading the page =)')
+    const errorMessage = 'Ops, something went wrong — you may try reloading the page =)';
+    const errorAlert = screen.getByText(errorMessage)
     expect(errorAlert).toBeInTheDocument();
 
 });

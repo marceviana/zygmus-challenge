@@ -1,9 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import PostComments from './PostComments';
 
-let open = true;
-const setOpen = () => open=!open;
-
 const post = {
     "userId": 1,
     "id": 1,
@@ -34,9 +31,11 @@ const newComment = {
 }
 
 const props = {
-    errorFetchingComments: false,
+    open: true,
+    setOpen: () => props.open=!props.open,
     post,
     comments,
+    errorFetchingComments: false,
     onAddComment: c=>{
         comments.push(newComment)
     },
@@ -44,16 +43,26 @@ const props = {
 
 test('Expect comments to render in component', async () => {
 
-    render(<PostComments {...props} post={post} open={open} setOpen={setOpen} />);
+    render(<PostComments {...props} />);
 
-    const itemWrapper = screen.getByText('laudantium enim quasi est quidem magnam voluptate ipsam eos')
+    const itemWrapper = screen.getByText(comments[0].body.split('\n')[0])
     expect(itemWrapper).toBeInTheDocument();
+
+});
+
+test('Error fetching posts', async () => {
+    
+    render(<PostComments {...props} errorFetchingComments={true} />);
+
+    const errorMessage = 'Ops, something went wrong — you may try reloading the page =)';
+    const errorAlert = screen.getByText(errorMessage)
+    expect(errorAlert).toBeInTheDocument();
 
 });
 
 test('Add a new comment', async () => {
 
-    render(<PostComments {...props} post={post} open={open} setOpen={setOpen} />);
+    render(<PostComments {...props} />);
 
     const input = screen.getByLabelText('write a comment')
     fireEvent.change(input, { target: {value: newComment.body }})
@@ -61,9 +70,10 @@ test('Add a new comment', async () => {
 
     const button = screen.getByLabelText('post your comment')
     fireEvent.click(button)
+    
+    render(<PostComments {...props} />);
 
-    const newItemWrapper = screen.getByText(newComment.body)
-    expect(newItemWrapper).toBeInTheDocument();
+    expect(screen.getByText(newComment.body)).toBeInTheDocument()
 
 });
 

@@ -36,6 +36,10 @@ export const getPosts = () => {
             type: types.ACT_GET_POSTS,
             payload: []
         })
+        /*  
+        |   setTimeout was implementend only for the sake of challenge 
+        |   so the placeholder skeleton is visible for a second
+        */
         setTimeout(() => {
             axios.get(constants.API_POSTS_ENDPOINT)
             .then(r=>{
