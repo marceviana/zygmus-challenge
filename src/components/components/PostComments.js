@@ -157,8 +157,10 @@ const PostComments = ({ post, comments, onAddComment, open, setOpen, ...props })
 }
 
 PostComments.propTypes = {
+    open: PropTypes.bool.isRequired, 
     post: PropTypes.object.isRequired, 
     comments: PropTypes.array.isRequired, 
+    setOpen: PropTypes.func.isRequired,
     onAddComment: PropTypes.func.isRequired,
     errorFetchingComments: PropTypes.bool,
 }

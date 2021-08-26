@@ -62,8 +62,10 @@ const props = {
     getComments,
     addComment,
     cleanPosts,
+    fetchingPosts: false,
     errorFetchingPosts: false,
-    fetchingPosts: false
+    fetchingComments: false,
+    errorFetchingComments: false,
 }
 
 test('While fetching posts', async () => {
