@@ -14,6 +14,7 @@ import {
     Avatar,
     IconButton,
     Typography,
+    Tooltip,
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +64,9 @@ const PostCard = ({ post, ...props }) => {
                     onClick={handleFavoriteClick}
                     aria-label={favorite ? "remove from favorites" : "add to favorites"}
                 >
-                    <FavoriteIcon color={favorite ? "error" : "inherit"} />
+                    <Tooltip title={favorite ? "remove from favorites" : "add to favorites"} enterDelay={800} arrow>
+                        <FavoriteIcon color={favorite ? "error" : "inherit"} />
+                    </Tooltip>
                 </IconButton>
                 <IconButton
                     className={clsx(classes.open, {
@@ -73,7 +76,9 @@ const PostCard = ({ post, ...props }) => {
                     aria-expanded={open}
                     aria-label="view comments"
                 >
-                    <ChatBubbleIcon />
+                    <Tooltip title="view comments" enterDelay={800} arrow>
+                        <ChatBubbleIcon />
+                    </Tooltip>
                 </IconButton>
             </CardActions>
             <PostComments {...props} post={post} open={open} setOpen={setOpen}/>
