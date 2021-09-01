@@ -65,7 +65,7 @@ export const getPosts = () => {
         })
         /*  
         |   setTimeout was implementend only for the sake of challenge 
-        |   so the placeholder skeleton is visible for a second
+        |   so the skeleton screen is visible for two seconds
         */
         setTimeout(() => {
             axios.get(constants.API_POSTS_ENDPOINT)
@@ -80,7 +80,7 @@ export const getPosts = () => {
                     type: types.ACT_GET_POSTS_ERROR
                 })
             })
-        }, 1000 )
+        }, 2000 )
     }
 }
 

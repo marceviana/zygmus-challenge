@@ -9,6 +9,7 @@ import {
     IconButton,
     TextField,  
 } from '@material-ui/core';
+import SharedContext from '../../context';
 
 const CustomTextField = withStyles({
     root: {
@@ -27,9 +28,6 @@ const CustomTextField = withStyles({
 })(TextField);
 
 const useStyles = makeStyles((theme) => ({
-    avatar: {
-        backgroundColor: '#254a78',
-    },
     userAvatar: {
         backgroundColor: '#48afa1',
     },
@@ -58,10 +56,11 @@ const ComposeBox = ({ onSubmit }) => {
 
     const classes = useStyles();
     const [commentText, setCommentText] = React.useState("");
-    
+    const context = React.useContext(SharedContext)
+
     return (
         <CardContent className={classes.fieldWrapper}>
-            <Avatar className={`${classes.avatar} ${classes.userAvatar}`} />
+            <Avatar className={`${classes.userAvatar}`} >{context.user.name.charAt(0)}</Avatar>
             <CustomTextField 
                 fullWidth 
                 multiline
