@@ -7,11 +7,21 @@ A ReactJS project based on [create-react-app](https://github.com/facebook/create
 yarn install
 ```
 
+## How to run the app
+
+```js
+yarn start
+```
+
+Run `yarn start` and navigate to http://localhost:3000 to see the app running
+
 ## Testing
 
 ```js
 yarn test
 ```
+
+Run `yarn test` to execute the unit tests and check the results in your terminal
 
 ## Features
 
