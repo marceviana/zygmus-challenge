@@ -24,7 +24,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const PostList = ({ getPosts, getComments, addComment, cleanPosts, posts, comments, ...props }) => {
+const PostList = (props) => {
+
+    const { getPosts, getComments, cleanPosts, posts, comments } = props;
 
     useEffect(() => {
         getPosts();
@@ -42,9 +44,6 @@ const PostList = ({ getPosts, getComments, addComment, cleanPosts, posts, commen
         return comments.filter(c=>c.postId===postId)
     }
 
-    /* 
-        @handleScroll implements infinite scroll on posts list
-    */
     const handleScroll = () => {
         if (window.innerHeight + 
             Math.max(window.pageYOffset,document.documentElement.scrollTop,document.body.scrollTop) 
@@ -71,9 +70,9 @@ const PostList = ({ getPosts, getComments, addComment, cleanPosts, posts, commen
             {posts.map((post,k)=>
                 k < numberPosts ? 
                 <PostCard 
-                    onAddComment={addComment} 
+                    {...props}
+                    post={post}
                     comments={filterComments(post.id)} 
-                    post={post} 
                     key={k} /> 
                 : 
                 null
@@ -92,9 +91,6 @@ PostList.propTypes = {
     fetchingPosts: PropTypes.bool.isRequired,
     errorFetchingPosts: PropTypes.bool.isRequired,
     comments: PropTypes.array.isRequired,
-    fetchingComments: PropTypes.bool.isRequired,
-    errorFetchingComments: PropTypes.bool.isRequired,
-    addComment: PropTypes.func.isRequired,
     getComments: PropTypes.func.isRequired,
     getPosts: PropTypes.func.isRequired,
     cleanPosts: PropTypes.func.isRequired,

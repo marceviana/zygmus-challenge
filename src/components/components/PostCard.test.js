@@ -11,7 +11,14 @@ const post = {
 const props = {
     post,
     comments: [],
-    onAddComment: ()=>{},
+    favorites: [],
+    addComment: ()=>{},
+    addToFavorites: (postId)=>{
+        props.favorites.push(postId)
+    },
+    removeFromFavorites: (postId)=>{
+        props.favorites = props.favorites.filter(pId=>postId!==pId)
+    },
 }
 
 test('Open comments dialog', async () => {
@@ -32,6 +39,8 @@ test('Toggle favorite in a post', async () => {
 
     const addToFavoritesBtn = screen.getByLabelText('add to favorites')
     fireEvent.click(addToFavoritesBtn)
+
+    render(<PostCard {...props} />);
 
     const removeFromfavoritesBtn = screen.getByLabelText('remove from favorites')
     expect(removeFromfavoritesBtn).toBeInTheDocument();

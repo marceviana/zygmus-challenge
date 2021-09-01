@@ -2,9 +2,8 @@ import React from 'react'
 import PropTypes from "prop-types";
 import clsx from 'clsx';
 import PostComments from './PostComments';
-import FavoriteIcon from '@material-ui/icons/FavoriteBorderOutlined';
+import FavoritesButton from './FavoritesButton';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubbleOutlineOutlined';
-
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Card,
@@ -39,11 +38,6 @@ const PostCard = ({ post, ...props }) => {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [favorite, setFavorite] = React.useState(false);
-    
-    const handleFavoriteClick = () => {
-        setFavorite(!favorite);
-    };
     
     let dateStr = new Date().toGMTString();
 
@@ -60,14 +54,7 @@ const PostCard = ({ post, ...props }) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton 
-                    onClick={handleFavoriteClick}
-                    aria-label={favorite ? "remove from favorites" : "add to favorites"}
-                >
-                    <Tooltip title={favorite ? "remove from favorites" : "add to favorites"} enterDelay={800} arrow>
-                        <FavoriteIcon color={favorite ? "error" : "inherit"} />
-                    </Tooltip>
-                </IconButton>
+                <FavoritesButton {...props} postId={post.id}/>
                 <IconButton
                     className={clsx(classes.open, {
                         [classes.iconOpened]: open,
@@ -81,7 +68,7 @@ const PostCard = ({ post, ...props }) => {
                     </Tooltip>
                 </IconButton>
             </CardActions>
-            <PostComments {...props} post={post} open={open} setOpen={setOpen}/>
+            <PostComments {...props} post={post} open={open} onClose={()=>setOpen(false)}/>
         </Card>
     );
 }
@@ -89,7 +76,7 @@ const PostCard = ({ post, ...props }) => {
 PostCard.propTypes = {
     post: PropTypes.object.isRequired,
     comments: PropTypes.array.isRequired,
-    onAddComment: PropTypes.func.isRequired,
+    addComment: PropTypes.func.isRequired,
 }
 
 export default PostCard

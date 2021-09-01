@@ -2,9 +2,36 @@ import axios from 'axios';
 import * as types from './action-types';
 import * as constants from '../constants';
 
+export const resetState = () => {
+    return {
+        type: types.ACT_RESET_STATE
+    }
+}
+
+export const addToFavorites = postId => {
+    return {
+        type: types.ACT_ADD_TO_FAVORITES,
+        payload: postId
+    }
+}
+
+export const removeFromFavorites = postId => {
+    return {
+        type: types.ACT_REMOVE_FROM_FAVORITES,
+        payload: postId
+    }
+}
+
 export const addComment = payload => {
     return {
         type: types.ACT_ADD_COMMENT,
+        payload
+    }
+}
+
+export const deleteComment = payload => {
+    return {
+        type: types.ACT_DELETE_COMMENT,
         payload
     }
 }

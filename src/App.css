@@ -1,15 +1,52 @@
+#root {
+  padding-top: 90px;
+}
 
 .App-logo {
-  height: 50px;
-  pointer-events: none;
-  margin: 10px;
+  height: 30px;
+  margin: 25px auto;
 }
 
 .App-header {
-  background-color: #f0f0f0;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   margin-bottom: .5em;
+  box-shadow: 0 0 10px rgba(0,0,0, .3);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
+ 
+.form {
+  max-width: 330px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.form .MuiFormControl-root {
+  margin-bottom: 20px;
+}
+
+.form button {
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  #root {
+    padding-top: 65px;
+  }  
+  .App-logo {
+    height: 25px;
+    margin: 15px auto;
+  }
+   
+}
+

@@ -32,11 +32,11 @@ const newComment = {
 
 const props = {
     open: true,
-    setOpen: () => props.open=!props.open,
+    onClose: () => props.open=false,
     post,
     comments,
     errorFetchingComments: false,
-    onAddComment: c=>{
+    addComment: c=>{
         comments.push(newComment)
     },
 }

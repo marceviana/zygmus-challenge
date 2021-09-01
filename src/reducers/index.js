@@ -1,63 +1,80 @@
 import * as types from '../actions/action-types'
 
-export const defaultState = {
+export const INITIAL_STATE = {
     comments: [],
     fetchingComments: false,
     errorFetchingComments: false,
     posts: [],
     fetchingPosts: false,
     errorFetchingPosts: false,
+    favorites: [],
 }
 
-export const reducer = function (state, action) {  
-    const newState = { ...state }
+export const reducer = (state=INITIAL_STATE, action) => {  
     switch (action.type) {
+        case types.ACT_RESET_STATE:
+            return { ...INITIAL_STATE }
+        case types.ACT_ADD_TO_FAVORITES:
+            return { 
+                ...state,
+                favorites: [ ...state.favorites, action.payload ]
+            }
+        case types.ACT_REMOVE_FROM_FAVORITES:
+            return { 
+                ...state,
+                favorites: [ ...state.favorites.filter(pId=>pId!==action.payload) ]
+            }
         case types.ACT_ADD_COMMENT:
             return { 
-                ...newState,
-                comments: [ ...newState.comments, action.payload ]
+                ...state,
+                comments: [ ...state.comments, action.payload ]
+            }
+        case types.ACT_DELETE_COMMENT:
+            return { 
+                ...state,
+                comments: [ ...state.comments.filter(c=>c.id!==action.payload) ]
             }
         case types.ACT_GET_COMMENTS:
             return { 
-                ...newState,
+                ...state,
                 fetchingComments: true,
                 errorFetchingComments: false
             }
         case types.ACT_GET_COMMENTS_SUCCESS:
             return { 
-                ...newState,
-                comments: action.payload,
+                ...state,
+                comments: [ ...action.payload, ...state.comments.filter(c=>!action.payload.find(p=>p.id===c.id)) ],
                 fetchingComments: false,
                 errorFetchingComments: false
             }
         case types.ACT_GET_COMMENTS_ERROR:
             return { 
-                ...newState,
+                ...state,
                 fetchingComments: false,
                 errorFetchingComments: true
             }
         case types.ACT_GET_POSTS:
             return { 
-                ...newState,
+                ...state,
                 fetchingPosts: true,
                 errorFetchingPosts: false
             }
         case types.ACT_GET_POSTS_SUCCESS:
             return { 
-                ...newState,
+                ...state,
                 posts: action.payload,
                 fetchingPosts: false,
                 errorFetchingPosts: false
             }
         case types.ACT_GET_POSTS_ERROR:
             return { 
-                ...newState,
+                ...state,
                 fetchingPosts: false,
                 errorFetchingPosts: true
             }
         case types.ACT_CLEAN_POSTS:
             return { 
-                ...newState,
+                ...state,
                 posts: [],
                 fetchingPosts: false,
                 errorFetchingPosts: true
@@ -65,5 +82,5 @@ export const reducer = function (state, action) {
        default:
         break;
     }
-    return newState
+    return state
 }
